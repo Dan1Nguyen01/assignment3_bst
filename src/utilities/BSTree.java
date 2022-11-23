@@ -50,20 +50,41 @@ public class BSTree<E> implements BSTreeADT {
 
 	@Override
 	public boolean contains(Comparable entry) throws TreeException {
-		// TODO Auto-generated method stub
-		return false;
+		boolean isContain = false;
+		
+		return isContain;
 	}
 
 	@Override
 	public BSTreeNode search(Comparable entry) throws TreeException {
-		// TODO Auto-generated method stub
+		if(root==null){
+			throw new TreeException();
+		}
+		while (root!= null){
+			if(root.getElement().equals(((BSTreeNode)entry).getElement())){
+				return root;
+			}else if(root.getElement()< ((BSTreeNode<E>) entry).getElement()){
+				root= root.getLeft();
+			}else {
+				root = root.getRight();
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public boolean add(Comparable newEntry) throws NullPointerException {
-
-		return false;
+		if(newEntry== null) {
+			throw new NullPointerException();
+		}else {
+			BSTreeNode<E> node  =  new BSTreeNode (newEntry);
+			if(node.getElement()>root.getElement()) {
+				node.setRight(node.getRight());
+			}else if(node.getElement()<root.getElement()) {
+				node.setLeft(node.getLeft());
+			}
+		}
+		return true;
 	}
 
 	@Override
