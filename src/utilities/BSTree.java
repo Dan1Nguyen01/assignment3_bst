@@ -1,5 +1,7 @@
 package utilities;
 
+import java.util.Comparator;
+
 import exceptions.TreeException;
 import referenceBasedTreeImplementation.BSTreeNode;
 
@@ -9,7 +11,6 @@ public class BSTree<E> implements BSTreeADT {
 	private BSTreeNode<E> root;
 
 	public BSTree() {
-		// construct an emty BST
 		this.root = null;
 	}
 
@@ -51,22 +52,39 @@ public class BSTree<E> implements BSTreeADT {
 	@Override
 	public boolean contains(Comparable entry) throws TreeException {
 		boolean isContain = false;
-		
+		if (root == null) {
+			throw new TreeException();
+		}
+
+		BSTreeNode node = new BSTreeNode(entry);
+		while (root != null) {
+
+			if (root.getElement().equals(node.getElement())) {
+				isContain = true;
+			} else if (((Comparable) root.getElement()).compareTo(node.getElement()) < 0) {
+				root = root.getRight();
+			} else {
+				root = root.getLeft();
+			}
+
+		}
+
 		return isContain;
 	}
 
 	@Override
 	public BSTreeNode search(Comparable entry) throws TreeException {
-		if(root==null){
+		if (root == null) {
 			throw new TreeException();
 		}
-		while (root!= null){
-			if(root.getElement().equals(((BSTreeNode)entry).getElement())){
+		BSTreeNode node = new BSTreeNode(entry);
+		while (root != null) {
+			if (root.getElement().equals(node.getElement())) {
 				return root;
-			}else if(root.getElement()< ((BSTreeNode<E>) entry).getElement()){
-				root= root.getLeft();
-			}else {
+			} else if (((Comparable) root.getElement()).compareTo(node.getElement()) < 0) {
 				root = root.getRight();
+			} else {
+				root = root.getLeft();
 			}
 		}
 		return null;
@@ -74,17 +92,23 @@ public class BSTree<E> implements BSTreeADT {
 
 	@Override
 	public boolean add(Comparable newEntry) throws NullPointerException {
-		if(newEntry== null) {
+		boolean isAdd = false;
+		if (newEntry == null) {
 			throw new NullPointerException();
-		}else {
-			BSTreeNode<E> node  =  new BSTreeNode (newEntry);
-			if(node.getElement()>root.getElement()) {
+		} else {
+			BSTreeNode<E> node = new BSTreeNode(newEntry);
+			if (((Comparable) (node).getElement()).compareTo(root.getElement()) > 0) {
 				node.setRight(node.getRight());
-			}else if(node.getElement()<root.getElement()) {
+				size++;
+				isAdd = true;
+			} else if (((Comparable) node.getElement()).compareTo(root.getElement()) < 0) {
 				node.setLeft(node.getLeft());
+				size++;
+				isAdd = true;
 			}
 		}
-		return true;
+		
+		return isAdd;
 	}
 
 	@Override
@@ -105,21 +129,22 @@ public class BSTree<E> implements BSTreeADT {
 		return null;
 	}
 
-	public boolean hasLeftChild() {
-
-		return false;
+	public boolean hasLeftChild(BSTreeNode node) {
+		boolean leftChild = node.getLeft() != null ? true : false;
+		return leftChild;
 	}
 
-	public boolean hasRightChild() {
+	public boolean hasRightChild(BSTreeNode node) {
+		boolean rightChild = node.getRight() != null ? true : false;
+		return rightChild;
 
-		return false;
 	}
 
-	public boolean isLeaf(BSTreeNode currentNode) {
-		if (currentNode.getLeft() == null && currentNode.getRight() == null) {
-			return true;
-		}
-		return false;
+	public boolean isLeaf(BSTreeNode node) {
+
+		boolean leaf = hasLeftChild(node) && hasLeftChild(node) ? true : false;
+
+		return leaf;
 	}
 
 }

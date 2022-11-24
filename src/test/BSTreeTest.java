@@ -9,11 +9,17 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import exceptions.TreeException;
+import referenceBasedTreeImplementation.BSTreeNode;
+import utilities.BSTree;
+
 /**
  * @author danng
  *
  */
 class BSTreeTest {
+	BSTree node;
+	BSTreeNode root;
 
 	/**
 	 * @throws java.lang.Exception
@@ -34,15 +40,18 @@ class BSTreeTest {
 	 */
 	@Test
 	void testBSTree() {
-		fail("Not yet implemented");
+		assertNull(root);
 	}
 
 	/**
 	 * Test method for {@link utilities.BSTree#BSTree(java.lang.Object)}.
+	 * @throws TreeException 
 	 */
 	@Test
-	void testBSTreeE() {
-		fail("Not yet implemented");
+	void testBSTreeE() throws TreeException {
+		node = new BSTree("A");
+		root = new BSTreeNode("A");
+		assertEquals(root.getElement(), node.getRoot().getElement());
 	}
 
 	/**
@@ -50,7 +59,8 @@ class BSTreeTest {
 	 */
 	@Test
 	void testGetRoot() {
-		fail("Not yet implemented");
+		root = new BSTreeNode ("root");
+		assertEquals("root",root.getElement() );
 	}
 
 	/**
@@ -66,7 +76,10 @@ class BSTreeTest {
 	 */
 	@Test
 	void testSize() {
-		fail("Not yet implemented");
+		node.add("1");
+		node.add("2");
+		
+		assertEquals(2, node.size);
 	}
 
 	/**
@@ -74,7 +87,7 @@ class BSTreeTest {
 	 */
 	@Test
 	void testIsEmpty() {
-		fail("Not yet implemented");
+		assertNull(root);
 	}
 
 	/**
@@ -82,7 +95,14 @@ class BSTreeTest {
 	 */
 	@Test
 	void testClear() {
-		fail("Not yet implemented");
+		node.add("1");
+		node.add("2");
+		
+		node.clear();
+		
+		assertEquals(0, node.getHeight());
+		assertEquals(0, node.size());
+		assertNull(root);
 	}
 
 	/**
