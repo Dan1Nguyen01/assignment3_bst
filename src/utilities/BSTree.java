@@ -1,6 +1,8 @@
 package utilities;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 
 import exceptions.TreeException;
 import referenceBasedTreeImplementation.BSTreeNode;
@@ -16,6 +18,8 @@ public class BSTree<E> implements BSTreeADT {
 
 	public BSTree(E element) {
 		this.root = new BSTreeNode<E>(element, null, null);
+		size++;
+		height++;
 	}
 
 	@Override
@@ -24,7 +28,8 @@ public class BSTree<E> implements BSTreeADT {
 	}
 
 	@Override
-	public int getHeight() {
+	public int getHeight() throws TreeException {
+
 		return height;
 	}
 
@@ -60,7 +65,7 @@ public class BSTree<E> implements BSTreeADT {
 		while (root != null) {
 
 			if (root.getElement().equals(node.getElement())) {
-				isContain = true;
+				return isContain = true;
 			} else if (((Comparable) root.getElement()).compareTo(node.getElement()) < 0) {
 				root = root.getRight();
 			} else {
@@ -83,68 +88,167 @@ public class BSTree<E> implements BSTreeADT {
 				return root;
 			} else if (((Comparable) root.getElement()).compareTo(node.getElement()) < 0) {
 				root = root.getRight();
-			} else {
+			} else if (((Comparable) root.getElement()).compareTo(node.getElement()) > 0)
 				root = root.getLeft();
-			}
 		}
+
 		return null;
 	}
 
 	@Override
 	public boolean add(Comparable newEntry) throws NullPointerException {
 		boolean isAdd = false;
+		BSTreeNode<E> node = new BSTreeNode(newEntry);
 		if (newEntry == null) {
 			throw new NullPointerException();
+		}
+		if (root == null) {
+			root = node;
+			isAdd = true;
+			size++;
+
 		} else {
-			BSTreeNode<E> node = new BSTreeNode(newEntry);
-			if (((Comparable) (node).getElement()).compareTo(root.getElement()) > 0) {
-				node.setRight(node.getRight());
-				size++;
-				isAdd = true;
-			} else if (((Comparable) node.getElement()).compareTo(root.getElement()) < 0) {
-				node.setLeft(node.getLeft());
-				size++;
-				isAdd = true;
+			while (!isAdd) {
+				if (((Comparable) (node).getElement()).compareTo(root.getElement()) > 0) {
+					if (root.getRight() == null) {
+						root.setRight(node);
+						size++;
+						isAdd = true;
+					} else {
+						root = root.getRight();
+					}
+
+				} else if (((Comparable) node.getElement()).compareTo(root.getElement()) < 0) {
+					if (root.getLeft() == null) {
+						root.setLeft(node);
+						size++;
+						isAdd = true;
+					} else {
+						root = root.getLeft();
+					}
+				}
 			}
 		}
-		
 		return isAdd;
 	}
 
 	@Override
 	public Iterator inorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new InorderIterator();
+	}
+
+	private class InorderIterator implements Iterator<E> {
+		private ArrayList<E> list = new ArrayList<E>();
+		private int curr = 0;// point the current element in a list
+
+		public InorderIterator() {
+			inorder();// traverse binary tree and store elements in a list
+		}
+
+		// inorder traverse from the root
+		private void inorder() {
+			inorder(root);
+		}
+
+		private void inorder(BSTreeNode<E> root) {
+			if (root == null)
+				return;
+			inorder(root.getLeft());
+			list.add(root.getElement());
+			inorder(root.getRight());
+
+		}
+
+		@Override
+		public boolean hasNext() {
+
+			return curr < list.size() ? true : false;
+		}
+
+		@Override
+		public E next() throws NoSuchElementException {
+			return list.get(curr++);
+		}
+
 	}
 
 	@Override
 	public Iterator preorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new PreorderIterator();
+	}
+
+	private class PreorderIterator implements Iterator<E> {
+		private ArrayList<E> list = new ArrayList<E>();
+		private int curr = 0;
+
+		public PreorderIterator() {
+			preorder();
+		}
+
+		private void preorder() {
+			preorder(root);
+
+		}
+
+		private void preorder(BSTreeNode<E> root) {
+			if (root == null)
+				return;
+			list.add(root.getElement());
+			preorder(root.getLeft());
+			preorder(root.getRight());
+
+		}
+
+		@Override
+		public boolean hasNext() {
+			return curr < list.size() ? true : false;
+		}
+
+		@Override
+		public E next() throws NoSuchElementException {
+
+			return list.get(curr++);
+		}
+
 	}
 
 	@Override
 	public Iterator postorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new PostOrderIterator();
 	}
 
-	public boolean hasLeftChild(BSTreeNode node) {
-		boolean leftChild = node.getLeft() != null ? true : false;
-		return leftChild;
-	}
+	private class PostOrderIterator implements Iterator<E> {
+		private ArrayList<E> list = new ArrayList<E>();
+		private int curr = 0;
 
-	public boolean hasRightChild(BSTreeNode node) {
-		boolean rightChild = node.getRight() != null ? true : false;
-		return rightChild;
+		public PostOrderIterator() {
+			postorder();
+		}
 
-	}
+		private void postorder() {
+			postorder(root);
 
-	public boolean isLeaf(BSTreeNode node) {
+		}
 
-		boolean leaf = hasLeftChild(node) && hasLeftChild(node) ? true : false;
+		private void postorder(BSTreeNode<E> root) {
+			if (root == null)
+				return;
+			postorder(root.getLeft());
+			postorder(root.getRight());
+			list.add(root.getElement());
 
-		return leaf;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return curr < list.size();
+		}
+
+		@Override
+		public E next() throws NoSuchElementException {
+			return list.get(curr++);
+		}
+
 	}
 
 }

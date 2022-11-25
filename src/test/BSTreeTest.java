@@ -18,14 +18,15 @@ import utilities.BSTree;
  *
  */
 class BSTreeTest {
-	BSTree node;
-	BSTreeNode root;
+	private BSTree node;
+	private BSTreeNode root;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+
 	}
 
 	/**
@@ -45,7 +46,8 @@ class BSTreeTest {
 
 	/**
 	 * Test method for {@link utilities.BSTree#BSTree(java.lang.Object)}.
-	 * @throws TreeException 
+	 * 
+	 * @throws TreeException
 	 */
 	@Test
 	void testBSTreeE() throws TreeException {
@@ -59,16 +61,21 @@ class BSTreeTest {
 	 */
 	@Test
 	void testGetRoot() {
-		root = new BSTreeNode ("root");
-		assertEquals("root",root.getElement() );
+		root = new BSTreeNode("root");
+		assertEquals("root", root.getElement());
 	}
 
 	/**
 	 * Test method for {@link utilities.BSTree#getHeight()}.
+	 * @throws TreeException 
 	 */
 	@Test
-	void testGetHeight() {
-		fail("Not yet implemented");
+	void testGetHeight() throws TreeException {
+		node =new BSTree(6);
+		node.add(2);
+		node.add(7);
+		node.add(10);
+		assertEquals(3, node.getHeight());
 	}
 
 	/**
@@ -76,10 +83,10 @@ class BSTreeTest {
 	 */
 	@Test
 	void testSize() {
-		node.add("1");
+		node = new BSTree("1");
 		node.add("2");
-		
-		assertEquals(2, node.size);
+
+		assertEquals(2, node.size());
 	}
 
 	/**
@@ -92,14 +99,15 @@ class BSTreeTest {
 
 	/**
 	 * Test method for {@link utilities.BSTree#clear()}.
+	 * @throws TreeException 
 	 */
 	@Test
-	void testClear() {
-		node.add("1");
+	void testClear() throws TreeException {
+		node = new BSTree("1");
 		node.add("2");
-		
+
 		node.clear();
-		
+
 		assertEquals(0, node.getHeight());
 		assertEquals(0, node.size());
 		assertNull(root);
@@ -107,18 +115,30 @@ class BSTreeTest {
 
 	/**
 	 * Test method for {@link utilities.BSTree#contains(java.lang.Comparable)}.
+	 * 
+	 * @throws TreeException
 	 */
 	@Test
-	void testContains() {
-		fail("Not yet implemented");
+	void testContains() throws TreeException {
+		node = new BSTree("H");
+		node.add("B");
+		node.add("M");
+
+		assertTrue(node.contains("B"));
 	}
 
 	/**
 	 * Test method for {@link utilities.BSTree#search(java.lang.Comparable)}.
+	 * 
+	 * @throws TreeException
 	 */
 	@Test
-	void testSearch() {
-		fail("Not yet implemented");
+	void testSearch() throws TreeException {
+		node = new BSTree("H");
+		node.add("B");
+		node.add("M");
+
+		assertEquals("B", node.search("B").getElement());
 	}
 
 	/**
@@ -126,7 +146,10 @@ class BSTreeTest {
 	 */
 	@Test
 	void testAdd() {
-		fail("Not yet implemented");
+		node = new BSTree("H");
+		node.add("B");
+		node.add("M");
+		assertEquals(3, node.size());
 	}
 
 	/**

@@ -31,8 +31,9 @@ public interface BSTreeADT<E extends Comparable<? super E>> extends	Serializable
 	 * Determines the row height of the tree and returns that value as an
 	 * integer value.
 	 * @return the height of the tree.
+	 * @throws TreeException 
 	 */
-	public int getHeight();
+	public int getHeight() throws TreeException;
 	
 	/**
 	 * The number of elements currently stored in the tree is counted and
